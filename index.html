@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="bootstrap-4.0.0-dist/css/bootstrap.min.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="row justify-content-center my-5">
+      <div class="col-md-5">
+        <table border="1" class="table">
+          <tr align="center">
+            <td style="background-color:blueviolet; color: white;">Seat Allocator</td>
+          </tr>
+          <tr>
+            <td class="text-uppercase">Seat Name:<input type="text" class="form-control" id="a" value=""></td>
+          </tr>
+          <tr>
+            <td class="text-uppercase">Input Seat number:<input type="text" class="form-control" id="b" value=""></td>
+          </tr>
+          <tr>
+            <td align="center"><button type="button" class="btn btn-primary" value=""
+                onclick=" allocator()">ALLOCATOR</button></td>
+          </tr>
+          <tr>
+            <td align="center" class="text-uppercase">Find occupant:</td>
+          </tr>
+          <tr>
+            <td class="text-uppercase">Seat number:<input type="text" class="form-control" value="" id="nub"></td>
+          </tr>
+          <tr>
+            <td align="center"><button type="button" class="btn btn-success" onclick="show()">SHOW OCCUPANT</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    var destribute = [];
+    var seat;
+    var inseat;
+    var seatno;
+    function allocator() {
+      seat = a.value;
+      a.value = "";
+      inseat = b.value;
+      b.value = "";
+      destribute.push
+        (
+          {
+            myseat: seat,
+            numse: inseat
+          }
+        );
+      localStorage.setItem("Data", JSON.stringify(destribute));
+    }
+    console.log(destribute);
+    let nice
+    distribute = JSON.parse(localStorage.getItem('Data'));
+    function show() {
+      for (i = 0; i < destribute.length; i++) {
+        nice = destribute[i].numse;
+        console.log(nice);
+        // seatno = nub.value;
+        // nub.value = "";
+        if (numse === nice) {
+          alert(destribute[i].myseat);
+        }
+        else {
+          alert("Number is not the same");
+        }
+      }
+    }
+  </script>
+  <script src="bootstrap-4.0.0-dist/js/bootstrap.min.js"></script>
+  <script src="stylejava.js"></script>
+</body>
+
+</html>
