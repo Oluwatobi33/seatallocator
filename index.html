@@ -1,85 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="stylesheet" href="bootstrap-4.0.0-dist/css/bootstrap.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seat Allocator</title>
+  <link rel="stylesheet" href="bootstrap-4.0.0-dist/css/bootstrap.min.css" />
 </head>
-
 <body>
-  <div class="container">
-    <div class="row justify-content-center my-5">
-      <div class="col-md-5">
-        <table border="1" class="table">
-          <tr align="center">
-            <td style="background-color:blueviolet; color: white;">Seat Allocator</td>
-          </tr>
-          <tr>
-            <td class="text-uppercase">Seat Name:<input type="text" class="form-control" id="a" value=""></td>
-          </tr>
-          <tr>
-            <td class="text-uppercase">Input Seat number:<input type="text" class="form-control" id="b" value=""></td>
-          </tr>
-          <tr>
-            <td align="center"><button type="button" class="btn btn-primary" value=""
-                onclick=" allocator()">ALLOCATOR</button></td>
-          </tr>
-          <tr>
-            <td align="center" class="text-uppercase">Find occupant:</td>
-          </tr>
-          <tr>
-            <td class="text-uppercase">Seat number:<input type="text" class="form-control" value="" id="nub"></td>
-          </tr>
-          <tr>
-            <td align="center"><button type="button" class="btn btn-success" onclick="show()">SHOW OCCUPANT</button>
-            </td>
-          </tr>
-        </table>
+  <div class="container my-5">
+    <h3 class="text-center mb-4 text-primary">Seat Allocator System</h3>
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card p-4 shadow-sm">
+          <h5 class="text-info">Allocate Seat</h5>
+          <input type="text" class="form-control mb-2" id="seatName" placeholder="Enter occupant name">
+          <input type="text" class="form-control mb-2" id="seatNumber" placeholder="Enter seat number">
+          <button class="btn btn-primary w-100" onclick="allocateSeat()">Allocate</button>
+        </div>
+
+        <div class="card p-4 mt-4 shadow-sm">
+          <h5 class="text-success">Find Occupant</h5>
+          <input type="text" class="form-control mb-2" id="findSeatNumber" placeholder="Enter seat number to check">
+          <button class="btn btn-success w-100" onclick="showOccupant()">Show Occupant</button>
+          <p class="mt-3 text-center" id="resultMessage"></p>
+        </div>
       </div>
     </div>
   </div>
-  <script type="text/javascript">
-    var destribute = [];
-    var seat;
-    var inseat;
-    var seatno;
-    function allocator() {
-      seat = a.value;
-      a.value = "";
-      inseat = b.value;
-      b.value = "";
-      destribute.push
-        (
-          {
-            myseat: seat,
-            numse: inseat
-          }
-        );
-      localStorage.setItem("Data", JSON.stringify(destribute));
+
+  <script>
+    let seatData = JSON.parse(localStorage.getItem("seats")) || [];
+
+    function allocateSeat() {
+      const name = document.getElementById("seatName").value.trim();
+      const number = document.getElementById("seatNumber").value.trim();
+
+      if (!name || !number) {
+        alert("Please enter both name and seat number.");
+        return;
+      }
+
+      const alreadyExists = seatData.find(seat => seat.number === number);
+      if (alreadyExists) {
+        alert(`Seat number ${number} is already occupied by ${alreadyExists.name}`);
+        return;
+      }
+
+      seatData.push({ name, number });
+      localStorage.setItem("seats", JSON.stringify(seatData));
+      alert(`Seat ${number} has been assigned to ${name}`);
+      document.getElementById("seatName").value = "";
+      document.getElementById("seatNumber").value = "";
     }
-    console.log(destribute);
-    let nice
-    distribute = JSON.parse(localStorage.getItem('Data'));
-    function show() {
-      for (i = 0; i < destribute.length; i++) {
-        nice = destribute[i].numse;
-        console.log(nice);
-        // seatno = nub.value;
-        // nub.value = "";
-        if (numse === nice) {
-          alert(destribute[i].myseat);
-        }
-        else {
-          alert("Number is not the same");
-        }
+
+    function showOccupant() {
+      const seatNum = document.getElementById("findSeatNumber").value.trim();
+      const result = document.getElementById("resultMessage");
+
+      if (!seatNum) {
+        result.textContent = "Please enter a seat number.";
+        result.style.color = "red";
+        return;
+      }
+
+      const seat = seatData.find(seat => seat.number === seatNum);
+      if (seat) {
+        result.textContent = `Seat ${seatNum} is occupied by ${seat.name}`;
+        result.style.color = "green";
+      } else {
+        result.textContent = `Seat ${seatNum} is not occupied.`;
+        result.style.color = "red";
       }
     }
   </script>
-  <script src="bootstrap-4.0.0-dist/js/bootstrap.min.js"></script>
-  <script src="stylejava.js"></script>
-</body>
 
+  <script src="bootstrap-4.0.0-dist/js/bootstrap.min.js"></script>
+</body>
 </html>
